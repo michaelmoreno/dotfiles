@@ -9,6 +9,7 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 abbr pacman 'sudo pacman'
 abbr clip 'xclip -selection clipboard'
 abbr c 'ccat'
+abbr tree 'tree -C'
 abbr sriwd 'sudo systemctl restart iwd.service'
 abbr search 'sudo updatedb & locate'
 
