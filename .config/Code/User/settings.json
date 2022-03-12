@@ -1,0 +1,22 @@
+{
+  "editor.matchBrackets": false,
+  "glassit.alpha": 220,
+  "editor.inlineSuggest.enabled": true,
+  "workbench.colorTheme": "Palenight (Mild Contrast)",
+  "window.titleBarStyle": "custom",
+  "atomKeymap.promptV3Features": true,
+  "editor.fontSize": 21,
+  "window.enableMenuBarMnemonics": false,
+  "window.customMenuBarAltFocus": false,
+  "prettifySymbolsMode.substitutions": [
+    {
+        "language": "python",
+        "substitutions": [
+            {
+                "ugly": "lambda",
+                "pretty": "λ"
+            },
+        ]
+    },
+]
+}
