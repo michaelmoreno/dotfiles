@@ -1,11 +1,35 @@
+# Copyright (c) 2010 Aldo Cortesi
+# Copyright (c) 2010, 2014 dequis
+# Copyright (c) 2012 Randall Ma
+# Copyright (c) 2012-2014 Tycho Andersen
+# Copyright (c) 2012 Craig Barnes
+# Copyright (c) 2013 horsik
+# Copyright (c) 2013 Tao Sauvage
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 from typing import List  # noqa: F401
 
 from libqtile import bar, layout, widget
-from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
+from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
-
-import fontawesome as fa
 
 mod = "mod4"
 terminal = guess_terminal()
@@ -46,24 +70,16 @@ keys = [
     # multiple stack panes
     Key([mod, "shift"], "Return", lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack"),
-    Key([mod], "g", lazy.window.toggle_floating(),
-        desc="Toggle between split and unsplit sides of stack"),
     Key([mod], "t", lazy.spawn(terminal), desc="Launch terminal"),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    # KeyChord(['mod1'], 'x', [
-        # Key([], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    # ]),
-    # KeyChord([mod], "z", [
-    #     Key([], "x", lazy.spawn("xterm"))
-    # ]),
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart Qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "Return", lazy.spawn('rofi -show drun'), desc="Run rofi"),
-    Key([mod], "y", lazy.spawn('rofi -show drun'), desc="Run rofi"),
+    Key([mod], "Return", lazy.spawncmd(),
+        desc="Spawn a command using a prompt widget"),
 ]
 
 groups = [Group(i) for i in "123456789"]
@@ -107,11 +123,7 @@ layouts = [
 widget_defaults = dict(
     font='sans',
     fontsize=22,
-    markup=True,
     padding=15,
-    margin=50,
-    foreground='#000000',
-    rounded = True,
 )
 extension_defaults = widget_defaults.copy()
 
@@ -129,47 +141,19 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.Systray(),
-                widget.NvidiaSensors(format='{temp}°C'),
-                widget.CPUGraph(
-                    graph_color='#03fc6f',
-                    fill_color='#03fc6f',
-                    border_width=0,
-                ),
-                # widget.Memory(),
-                widget.MemoryGraph(
-                    graph_color='#03fc6f',
-                    fill_color='#03fc6f',
-                    border_width=0,
-
-                ),
-                widget.NetGraph(
-                    fill_color='#000000.0',
-                    graph_color='#03fc6f',
-                    border_width=0,
-                ),
-                        # widget.TextBox("default config", name="default"),
-                widget.Battery(
-                    format=fa.icons['microchip']+' {percent:2.0%} {hour:d}:{min:02d}',
-                    background='#03fc90',
-                    margin=50,
-                    ),
-                widget.Clock(
-                    format='%m-%d-%Y %a %I:%M %p', 
-                    background='#03fcce', opacity = 0.8, foreground = '#000000',
-                    rounded=True,
-                    margin=50,
-                    ),
-                widget.PulseVolume(
-                    background='#ffffff',
-                ),
+		widget.Systray(),
+		widget.NvidiaSensors(format='{temp}°C'),
+		widget.CPUGraph(),
+		# widget.Memory(),
+		widget.MemoryGraph(),
+		# widget.Net(format='{down}↓ {up}↑', update_interval=3,),
+		widget.NetGraph(),
+                # widget.TextBox("default config", name="default"),
+		widget.Battery(format='{char} {percent:2.0%} {hour:d}:{min:02d}'),
+                widget.Clock(format='%Y-%m-%d %a %I:%M %p'),
+		widget.PulseVolume(),
             ],
             36,
-            background="#000000.0",
-            # background="#000000",
-            opacity=1,
-            border_width=0,
-            # background="#ffffff", opacity=1
         ),
     ),
 ]

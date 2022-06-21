@@ -12,6 +12,15 @@ abbr c 'ccat'
 abbr tree 'tree -C'
 abbr sriwd 'sudo systemctl restart iwd.service'
 abbr search 'sudo updatedb & locate'
+abbr nano 'sudo nano'
+abbr br 'br ~'
+abbr kbrs 'setxkbmap -option caps:super && setxkbmap -option ctrl:ralt_rctrl && xset r rate 200 30'
+
+## Programs
+abbr davinci 'prime-run /opt/resolve/bin/resolve'
+
+alias py='python'
+
 
 set fish_color_normal normal
 set fish_color_command --bold
