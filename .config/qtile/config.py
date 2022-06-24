@@ -4,6 +4,8 @@ from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
+from qtile_extras import widget
+from qtile_extras.widget.decorations import RectDecoration, BorderDecoration
 
 import fontawesome as fa
 
@@ -48,7 +50,7 @@ keys = [
         desc="Toggle between split and unsplit sides of stack"),
     Key([mod], "g", lazy.window.toggle_floating(),
         desc="Toggle between split and unsplit sides of stack"),
-    Key([mod], "t", lazy.spawn(terminal), desc="Launch terminal"),
+    Key([mod], "y", lazy.spawn(terminal), desc="Launch terminal"),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
@@ -63,7 +65,7 @@ keys = [
     Key([mod, "control"], "r", lazy.restart(), desc="Restart Qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "Return", lazy.spawn('rofi -show drun'), desc="Run rofi"),
-    Key([mod], "y", lazy.spawn('rofi -show drun'), desc="Run rofi"),
+    # Key([mod], "y", lazy.spawn('rofi -show drun'), desc="Run rofi"),
 ]
 
 groups = [Group(i) for i in "123456789"]
@@ -82,6 +84,45 @@ for i in groups:
         # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
         #     desc="move focused window to group {}".format(i.name)),
     ])
+
+
+# groups = [
+#     # Group("1", 'G'),
+#     Group("1", label=fa.icons["terminal"]),
+#     Group("2", label=fa.icons["firefox"]),
+#     Group("3", label=fa.icons["code"]),
+#     Group("4", label=fa.icons["folder"]),
+#     Group("5", label=fa.icons["github"]),
+#     Group("6", label=fa.icons["soundcloud"]),
+#     Group("7", label=fa.icons["gamepad"]),
+#     # Group("8", label = fa.icons["firefox"]),
+#     # Group("9", label = fa.icons["firefox"]),
+# ]
+
+# for i in groups:
+#     keys.extend(
+#         [
+#             # mod1 + letter of group = switch to group
+#             Key(
+#                 [mod],
+#                 i.name,
+#                 lazy.group[i.name].toscreen(),
+#                 desc="Switch to group {}".format(i.name),
+#             ),
+#             # mod1 + shift + letter of group = switch to & move focused window to group
+#             Key(
+#                 [mod, "shift"],
+#                 i.name,
+#                 lazy.window.togroup(i.name, switch_group=True),
+#                 desc="Switch to & move focused window to group {}".format(
+#                     i.name),
+#             ),
+#             # Or, use below if you prefer not to switch to that group.
+#             # # mod1 + shift + letter of group = move focused window to group
+#             # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
+#             #     desc="move focused window to group {}".format(i.name)),
+#         ]
+    # )
 
 layouts = [
     layout.Columns(
@@ -109,18 +150,40 @@ widget_defaults = dict(
     fontsize=22,
     markup=True,
     padding=15,
-    margin=50,
     foreground='#000000',
     rounded = True,
 )
 extension_defaults = widget_defaults.copy()
 
+decor = {
+    "decorations": [
+        RectDecoration(colour="#f7f7f7", radius=5, filled=True, padding_y=0, padding_x=5),
+    ],
+    # "padding": 50,
+    # "margin": 50,
+}
+
+padding = 6
+
 screens = [
     Screen(
         bottom=bar.Bar(
             [
+                widget.Net(
+                    background="#00000000",
+                    format=fa.icons["wifi"]+" {up}", **decor
+                    ),
+                widget.Memory(background="#00000000",
+                    measure_mem='G', format=fa.icons["server"] + "{MemUsed: .2f} GB", **decor
+                ),
+                widget.CPU(format=fa.icons["microchip"]+" {load_percent}%", **decor),
                 widget.CurrentLayout(),
-                widget.GroupBox(),
+                widget.GroupBox(
+                    active="#ffffff",
+                    inactive="#000000",
+                    # highlight_method='line',
+                    # highlight_color=['000000.0', '03fc6f']
+                ),
                 widget.Prompt(),
                 widget.WindowName(),
                 widget.Chord(
@@ -131,37 +194,90 @@ screens = [
                 ),
                 widget.Systray(),
                 widget.NvidiaSensors(format='{temp}°C'),
-                widget.CPUGraph(
-                    graph_color='#03fc6f',
-                    fill_color='#03fc6f',
-                    border_width=0,
-                ),
+                # widget.CPUGraph(
+                #     graph_color='#03fc6f',
+                #     fill_color='#03fc6f',
+                #     border_width=0,
+                # ),
+                # widget.Memory(background="#00000000",
+                #     measure_mem='G', format=fa.icons["server"] + "{MemUsed: .2f} GB", **decor
+                # ),
+                # widget.CPU(format=fa.icons["microchip"]+" {load_percent}%", **decor),
                 # widget.Memory(),
-                widget.MemoryGraph(
-                    graph_color='#03fc6f',
-                    fill_color='#03fc6f',
-                    border_width=0,
+                # widget.MemoryGraph(
+                #     graph_color='#03fc6f',
+                #     fill_color='#03fc6f',
+                #     border_width=0,
 
-                ),
-                widget.NetGraph(
-                    fill_color='#000000.0',
-                    graph_color='#03fc6f',
-                    border_width=0,
-                ),
+                # ),
+                # widget.NetGraph(
+                #     fill_color='#000000.0',
+                #     graph_color='#03fc6f',
+                #     border_width=0,
+                # ),
                         # widget.TextBox("default config", name="default"),
                 widget.Battery(
                     format=fa.icons['microchip']+' {percent:2.0%} {hour:d}:{min:02d}',
-                    background='#03fc90',
-                    margin=50,
-                    ),
+                    # background='#03fc90',
+                    charge_char='⚡',
+                    decorations=[
+                        RectDecoration(
+                            colour="#f54573",
+                            radius=7,
+                            filled=True,
+                            padding_y=0,
+                            padding_x=padding
+                        ),
+                    ]
+                ),
+                # widget.Clock(
+                #     format='%m/%d/%Y %a %I:%M %p', 
+                #     opacity = 0.8, foreground = '#000000',
+                #     decorations = [
+                #         RectDecoration(
+                #             colour="#03fcce",
+                #             radius=7,
+                #             filled=True,
+                #             padding_y=0,
+                #             padding_x=padding
+                #         ),
+                #     ]
+                # ),
                 widget.Clock(
-                    format='%m-%d-%Y %a %I:%M %p', 
-                    background='#03fcce', opacity = 0.8, foreground = '#000000',
-                    rounded=True,
-                    margin=50,
-                    ),
+                    format=fa.icons["calendar"] + " %m/%d/%y %a",
+                    decorations=[
+                        RectDecoration(
+                            colour="#03fc90",
+                            radius=7,
+                            filled=True,
+                            padding_y=0,
+                            padding_x=padding
+                        ),
+                    ]),
+                widget.Clock(
+                    format=" %I:%M:%S %p",
+                    # background="#03fcce", 
+                    decorations = [
+                        RectDecoration(
+                            colour="#03fcce",
+                            radius=7,
+                            filled=True,
+                            padding_y=0,
+                            padding_x=padding
+                        ),
+                    ]
+                ),
                 widget.PulseVolume(
-                    background='#ffffff',
+                    # background='#ffffff',
+                    decorations = [
+                        RectDecoration(
+                            colour="#ffffff",
+                            radius=7,
+                            filled=True,
+                            padding_y=0,
+                            padding_x=padding
+                        ),
+                    ],
                 ),
             ],
             36,
