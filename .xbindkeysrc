@@ -1,0 +1,31 @@
+# Increase Volulme
+"pactl set-sink-volume @DEFAULT_SINK@ +5%"
+   XF86AudioRaiseVolume
+
+"pactl set-sink-volume @DEFAULT_SINK@ -5%"
+   XF86AudioLowerVolume
+
+#"pactl set-sink-mute @DEFAULT_SINK@ toggle"
+#   67
+
+"picom-trans -c -10"
+   Mod4 + minus
+
+"picom-trans -c +10"
+   Mod4 + equal
+
+# Cycle themes
+"python proj/theme-syncer/theme-syncer.py cycle"
+   XF86Launch1
+
+"sudo python kb-led-controller.py"
+   XF86KbdBrightnessUp
+
+"sudo python brightness_controller.py increase"
+   XF86MonBrightnessUp
+
+"sudo python brightness_controller.py decrease"
+   XF86MonBrightnessDown
+
+#"flameshot -gui'
+#   Shift+Mod4 + s
