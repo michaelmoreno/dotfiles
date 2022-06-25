@@ -164,28 +164,73 @@ decor = {
 }
 
 padding = 6
-
 screens = [
     Screen(
         bottom=bar.Bar(
             [
+                widget.WindowName(
+                    width=150,
+                    decorations=[
+                        RectDecoration(
+                            colour="#ffffff",
+                            radius=7,
+                            filled=True,
+                            padding_y=0,
+                            padding_x=padding
+                        ),
+                    ]
+                ),
                 widget.Net(
                     background="#00000000",
-                    format=fa.icons["wifi"]+" {up}", **decor
-                    ),
+                    format=fa.icons["wifi"]+" {up}", decorations=[
+                        RectDecoration(
+                            colour="#96cdfb",
+                            radius=7,
+                            filled=True,
+                            padding_y=0,
+                            padding_x=padding
+                        ),
+                    ]
+                ),
                 widget.Memory(background="#00000000",
-                    measure_mem='G', format=fa.icons["server"] + "{MemUsed: .2f} GB", **decor
+                    measure_mem='G', format=fa.icons["server"] + "{MemUsed: .2f} GB", decorations=[
+                        RectDecoration(
+                            colour="#f8bd96",
+                            radius=7,
+                            filled=True,
+                            padding_y=0,
+                            padding_x=padding
+                        ),
+                    ]
                 ),
-                widget.CPU(format=fa.icons["microchip"]+" {load_percent}%", **decor),
-                widget.CurrentLayout(),
+                widget.CPU(format=fa.icons["microchip"]+" {load_percent}%", decorations=[
+                        RectDecoration(
+                            colour="#fae3b0",
+                            radius=7,
+                            filled=True,
+                            padding_y=0,
+                            padding_x=padding
+                        ),
+                    ]
+                ),
+                widget.Spacer(length=bar.STRETCH),
                 widget.GroupBox(
-                    active="#ffffff",
-                    inactive="#000000",
-                    # highlight_method='line',
-                    # highlight_color=['000000.0', '03fc6f']
+                    disable_drag=True,
+                    background="#f2cdcd",
+                    active="#000000",
+                    inactive="#7f7f7f",
+                    highlight_method='line',
+                    highlight_color="#00000000",
+                    borderwidth=6,
+                    # border="#000000",
+                    decorations=[
+                        RectDecoration(
+                            radius=5,
+                        )
+                    ],
                 ),
+                widget.Spacer(length=bar.STRETCH),
                 widget.Prompt(),
-                widget.WindowName(),
                 widget.Chord(
                     chords_colors={
                         'launch': ("#ff0000", "#ffffff"),
@@ -194,35 +239,13 @@ screens = [
                 ),
                 widget.Systray(),
                 widget.NvidiaSensors(format='{temp}°C'),
-                # widget.CPUGraph(
-                #     graph_color='#03fc6f',
-                #     fill_color='#03fc6f',
-                #     border_width=0,
-                # ),
-                # widget.Memory(background="#00000000",
-                #     measure_mem='G', format=fa.icons["server"] + "{MemUsed: .2f} GB", **decor
-                # ),
-                # widget.CPU(format=fa.icons["microchip"]+" {load_percent}%", **decor),
-                # widget.Memory(),
-                # widget.MemoryGraph(
-                #     graph_color='#03fc6f',
-                #     fill_color='#03fc6f',
-                #     border_width=0,
-
-                # ),
-                # widget.NetGraph(
-                #     fill_color='#000000.0',
-                #     graph_color='#03fc6f',
-                #     border_width=0,
-                # ),
-                        # widget.TextBox("default config", name="default"),
                 widget.Battery(
                     format=fa.icons['microchip']+' {percent:2.0%} {hour:d}:{min:02d}',
                     # background='#03fc90',
                     charge_char='⚡',
                     decorations=[
                         RectDecoration(
-                            colour="#f54573",
+                            colour="#f28fad",
                             radius=7,
                             filled=True,
                             padding_y=0,
@@ -230,24 +253,11 @@ screens = [
                         ),
                     ]
                 ),
-                # widget.Clock(
-                #     format='%m/%d/%Y %a %I:%M %p', 
-                #     opacity = 0.8, foreground = '#000000',
-                #     decorations = [
-                #         RectDecoration(
-                #             colour="#03fcce",
-                #             radius=7,
-                #             filled=True,
-                #             padding_y=0,
-                #             padding_x=padding
-                #         ),
-                #     ]
-                # ),
                 widget.Clock(
                     format=fa.icons["calendar"] + " %m/%d/%y %a",
                     decorations=[
                         RectDecoration(
-                            colour="#03fc90",
+                            colour="#38ffa9",
                             radius=7,
                             filled=True,
                             padding_y=0,
@@ -259,7 +269,7 @@ screens = [
                     # background="#03fcce", 
                     decorations = [
                         RectDecoration(
-                            colour="#03fcce",
+                            colour="#9debde",
                             radius=7,
                             filled=True,
                             padding_y=0,
@@ -268,7 +278,6 @@ screens = [
                     ]
                 ),
                 widget.PulseVolume(
-                    # background='#ffffff',
                     decorations = [
                         RectDecoration(
                             colour="#ffffff",
