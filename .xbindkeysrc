@@ -27,5 +27,5 @@
 "sudo python brightness_controller.py decrease"
    XF86MonBrightnessDown
 
-#"flameshot -gui'
-#   Shift+Mod4 + s
+"flameshot gui"
+   Mod4 + backslash
