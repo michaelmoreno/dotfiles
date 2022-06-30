@@ -1,11 +1,11 @@
 {
     "type": "script",
-    "description": "ArrowDown-K",
+    "description": "ArrowDown-Jump-E",
     "store": {},
     "modes": [
         3
     ],
-    "usageCount": 1318,
+    "usageCount": 6,
     "prompt": false,
     "omitTrigger": false,
     "showInTrayMenu": false,
@@ -21,7 +21,7 @@
         "modifiers": [
             "<alt>"
         ],
-        "hotKey": "k"
+        "hotKey": "d"
     },
     "filter": {
         "regex": null,

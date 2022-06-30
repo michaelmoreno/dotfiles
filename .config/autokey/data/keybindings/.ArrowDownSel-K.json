@@ -20,7 +20,7 @@
     "hotkey": {
         "modifiers": [
             "<alt>",
-            "<super>"
+            "<shift>"
         ],
         "hotKey": "k"
     },
