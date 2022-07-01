@@ -14,6 +14,8 @@
 
 **Application Launcher**: [rofi](https://github.com/davatorium/rofi)
 
+**Notification Daemon**: [Dust](https://wiki.archlinux.org/title/Dunst)
+
 **Sound Server**: [PulseAudio](https://wiki.archlinux.org/title/PulseAudio)
 
 **Keybind Management**: [AutoKey](https://github.com/autokey/autokey), [xbindkeys](https://wiki.archlinux.org/title/xbindkeys), [setxkbmap](https://wiki.archlinux.org/title/setxkbmap)
