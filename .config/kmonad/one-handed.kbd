@@ -1,0 +1,112 @@
+(defcfg
+  ;; For Linux
+  input  (device-file "/dev/input/by-id/usb-ASUSTeK_Computer_Inc._N-KEY_Device-if02-event-kbd")
+  output (uinput-sink "My KMonad output"
+    ;; To understand the importance of the following line, see the section on
+    ;; Compose-key sequences at the near-bottom of this file.
+    "/run/current-system/sw/bin/sleep 1 && /run/current-system/sw/bin/setxkbmap -option compose:ralt")
+  cmp-seq ralt    ;; Set the compose key to `RightAlt'
+  cmp-seq-delay 5 ;; 5ms delay between each compose-key sequence press
+
+  ;; Comment this is you want unhandled events not to be emitted
+  fallthrough true
+
+  ;; Set this to false to disable any command-execution in KMonad
+  allow-cmd true
+)
+
+(defsrc
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab   q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps   a    s    d    f    g    h    j    k    l    ;    '       ret
+  lsft    z    x    c    v    b    n    m    ,    .    /    rsft   up
+  lctl lmet lalt           spc            ralt rctl          left down right
+)
+
+(defalias
+  spcsft (tap-next spc rsft)
+
+  OFF #((cmd-button "echo 0 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness && sudo /home/mm/rogauracore/rogauracore white") (layer-switch normal))
+  led-abc #((cmd-button "echo 3 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness && sudo /home/mm/rogauracore/rogauracore white") (layer-switch letters))
+  led-mod #((cmd-button "echo 3 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness && sudo /home/mm/rogauracore/rogauracore magenta") (layer-switch modifiers))
+  led-num #((cmd-button "echo 3 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness && sudo /home/mm/rogauracore/rogauracore green") (layer-switch numbers))
+  led-sup #((cmd-button "echo 3 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness && sudo /home/mm/rogauracore/rogauracore red") (layer-switch super))
+
+  ON (tap-next @led-abc lmet)
+  ABC (tap-next @led-abc rctl)
+  NUM (tap-next @led-num rctl)
+  MT-MS (multi-tap 200 @led-mod @led-sup)
+  ;; MT-ABC (multi-tap 200 @led-abc @led-num)
+
+  ;; mod shortcuts
+  Cz C-z
+  CSz C-S-z
+  Cx C-x
+  Cc C-c
+  Cv C-v
+  C/ C-/
+
+  ;; super shortcuts
+  Mup M-e
+  Mdown M-d
+  Mleft M-s
+  Mright M-f
+  
+  Mq M-q
+  Mw M-w
+  Mr M-r
+  My M-y
+
+  M1 M-1
+  M2 M-2
+  M3 M-3
+  M4 M-4
+  M5 M-5
+  M6 M-6
+  M7 M-7
+  M8 M-8
+  M9 M-9
+  
+  RUN #(M-t @led-abc)
+  Mtab #(M-tab @led-sup) 
+)
+
+(deflayer normal
+  grv 1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  @ON   a    s    d    f    g    h    j    k    l    ;    '       ret
+  lsft   z    x    c    v    b    n    m    ,    .    /    rsft   up
+  lctl lmet lalt           spc            lctrl rctl        left down right
+)
+
+(deflayer letters
+  grv XX  XX   XX   XX   XX   XX    i    l    m    f    b    y    bspc
+  tab  XX  XX   XX   XX     p   g    o    r    s    u    k    p    ret
+  @OFF  XX   XX   XX   XX    x   c    e    h    t    a    v       tab
+  lsft   XX   XX   XX   XX    q   w    d    n    j    z    esc   up   
+  lctl lmet lalt           @spcsft         @NUM @MT-MS      left down right
+)
+
+(deflayer numbers
+  grv XX  XX   XX   XX   XX   XX    7    8    9    0    -    =    bspc
+  tab  XX  XX   XX   XX   XX    \    4    5    6    '    [    ]    ret
+  @OFF  XX   XX   XX   XX   XX   `    1    2    3    ;    '       tab
+  lsft   XX   XX   XX   XX  XX   XX   XX    ,    .    /   esc    up   
+  lctl lmet lalt           @spcsft         @ABC @MT-MS      left down right
+)
+
+(deflayer modifiers 
+  grv XX  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX    bspc
+  tab  XX  XX   XX   XX   XX   esc  XX   up   XX   XX   XX   XX    ret
+  @OFF  XX   XX   XX   XX  XX home left down right end   XX       tab
+  lsft   XX   XX   XX   XX   @Cx   @Cc   @Cv   @Cz   @CSz @C/ esc up   
+  lctl lmet lalt           @spcsft         @ABC   @led-sup  left down right
+)
+
+(deflayer super 
+  grv XX  XX   XX   XX   XX   XX  @M5  @M6  @M7  @M8  @M9  @M6    @Mq
+  tab  XX  XX   XX   XX   XX   @My  @Mw  @Mup  @Mr   XX   XX   XX  @RUN
+  @OFF  XX   XX   XX   XX   XX   home @Mleft @Mdown @Mright end / @Mtab
+  lsft   XX   XX   XX   XX  XX   XX  @M1   @M2  @M3  @M4   esc   up   
+  lctl lmet lalt           ralt            @ABC   @led-mod left down right
+)
