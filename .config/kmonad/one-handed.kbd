@@ -80,10 +80,10 @@
 )
 
 (deflayer letters
-  grv XX  XX   XX   XX   XX   XX    i    l    m    f    b    y    bspc
-  tab  XX  XX   XX   XX     p   g    o    r    s    u    k    p    ret
+  grv XX  XX   XX   XX   XX   XX    j    l    m    f    b    y    bspc
+  tab  XX  XX   XX   XX   XX    q    o    r    s    u    k    p    ret
   @OFF  XX   XX   XX   XX    x   c    e    h    t    a    v       tab
-  lsft   XX   XX   XX   XX    q   w    d    n    j    z    esc   up   
+  lsft   XX   XX   XX   XX    g   w    d    n    i    z    esc   up   
   lctl lmet lalt           @spcsft         @NUM @MT-MS      left down right
 )
 
